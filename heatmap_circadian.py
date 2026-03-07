@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """heatmap_circadian.py
 ----------------------
-Heatmap of 6 circadian candidate genes in control conditions across three
+Heatmap of 7 circadian candidate genes in control conditions across two
 Vitis genotypes and 5 time points (1, 2, 4, 8, 24 h).
 
-Layout  : rows = genotype (Cab → Rip → Ram), columns = time (1→24 h)
-          6 gene panels separated by white dividers
+Layout  : rows = genotype (V.vi → V.ri), columns = time (1→24 h)
+          7 gene panels separated by white dividers
 
 Data    : Hopper16Supp3.xlsx — sheet 'Hopper.Combined.Leaf.NonParam3w'
           log2-normalised microarray means (n = 3 biological replicates each)
 
-Colour  : z-score per gene, calculated across all 15 values
-          (3 genotypes × 5 time points) so temporal and genotypic variation
+Colour  : z-score per gene, calculated across all 10 values
+          (2 genotypes × 5 time points) so temporal and genotypic variation
           are both visible on a common scale
 
 Stats   : BH-FDR q-values from the full 3-way non-parametric ANOVA reported
@@ -37,6 +37,7 @@ from matplotlib.colors import TwoSlopeNorm
 
 # ── Expression data extracted from Hopper16Supp3.xlsx ────────────────────────
 # Column order within each genotype: 1 h, 2 h, 4 h, 8 h, 24 h (control only)
+# Gene order and names as specified; Ramsey excluded.
 GENES = [
     dict(
         vit        = 'VIT_04s0008g00660',
@@ -44,39 +45,8 @@ GENES = [
         annotation = 'Early flowering 3',
         Cab = [12.8277, 12.8714, 12.4261, 13.6608, 12.6355],
         Rip = [12.8608, 13.2922, 13.3814, 13.9534, 12.9947],
-        Ram = [12.2060, 12.3333, 13.0446, 13.5813, 12.2062],
         q_time     = 7.88e-18,
         q_culttime = 1.50e-10,
-    ),
-    dict(
-        vit        = 'VIT_06s0004g05120',
-        short      = 'ARR1-B',
-        annotation = 'ARR1 typeB',
-        Cab = [10.6451, 10.4880, 11.5516, 13.9656, 10.1786],
-        Rip = [11.6670, 12.5345, 13.2078, 13.9746, 11.3349],
-        Ram = [ 9.9162,  9.9633, 12.5525, 13.7847,  9.5528],
-        q_time     = 1.98e-20,
-        q_culttime = 3.14e-9,
-    ),
-    dict(
-        vit        = 'VIT_08s0040g00900',
-        short      = 'MYB',
-        annotation = 'Myb family',
-        Cab = [12.5113, 12.6271, 12.7406, 12.9790, 12.7318],
-        Rip = [13.3819, 13.6313, 13.4512, 13.6088, 13.1151],
-        Ram = [13.1107, 13.3020, 13.5814, 13.4709, 13.0456],
-        q_time     = 7.85e-9,
-        q_culttime = 2.91e-5,
-    ),
-    dict(
-        vit        = 'VIT_09s0002g01440',
-        short      = 'ELF4',
-        annotation = 'Early flowering 4',
-        Cab = [13.2714, 13.2597, 13.4236, 13.4866, 12.6139],
-        Rip = [13.2908, 13.3402, 13.4791, 13.2043, 12.9921],
-        Ram = [12.8437, 12.7323, 13.1760, 13.2619, 12.4391],
-        q_time     = 2.85e-13,
-        q_culttime = 7.74e-3,
     ),
     dict(
         vit        = 'VIT_09s0002g02680',
@@ -84,40 +54,74 @@ GENES = [
         annotation = 'Early flowering 3',
         Cab = [11.5278, 11.3439, 10.7898, 11.8018, 11.1410],
         Rip = [10.9326, 11.4252, 12.0453, 12.7279, 10.9180],
-        Ram = [10.8558, 10.8359, 11.4755, 11.9575, 10.5164],
         q_time     = 6.87e-11,
         q_culttime = 5.80e-5,
     ),
     dict(
+        vit        = 'VIT_09s0002g01440',
+        short      = 'ELF4a',
+        annotation = 'Early flowering 4',
+        Cab = [13.2714, 13.2597, 13.4236, 13.4866, 12.6139],
+        Rip = [13.2908, 13.3402, 13.4791, 13.2043, 12.9921],
+        q_time     = 2.85e-13,
+        q_culttime = 7.74e-3,
+    ),
+    dict(
         vit        = 'VIT_06s0004g06600',
-        short      = 'Unknown',
+        short      = 'LUX4b',
         annotation = 'Unknown protein',
         Cab = [5.5653, 5.4036, 5.3573, 6.9768, 5.5619],
         Rip = [5.6515, 6.2087, 6.3398, 5.9924, 6.2531],
-        Ram = [6.8099, 6.6157, 6.7612, 6.6056, 6.5294],
         q_time     = 3.86e-7,
         q_culttime = 4.21e-9,
     ),
+    dict(
+        vit        = 'VIT_06s0004g05120',
+        short      = 'LUX1a',
+        annotation = 'ARR1 typeB',
+        Cab = [10.6451, 10.4880, 11.5516, 13.9656, 10.1786],
+        Rip = [11.6670, 12.5345, 13.2078, 13.9746, 11.3349],
+        q_time     = 1.98e-20,
+        q_culttime = 3.14e-9,
+    ),
+    dict(
+        vit        = 'VIT_08s0040g00900',
+        short      = 'LUX1b',
+        annotation = 'Myb family',
+        Cab = [12.5113, 12.6271, 12.7406, 12.9790, 12.7318],
+        Rip = [13.3819, 13.6313, 13.4512, 13.6088, 13.1151],
+        q_time     = 7.85e-9,
+        q_culttime = 2.91e-5,
+    ),
+    dict(
+        vit        = 'VIT_05s0077g00940',
+        short      = 'PHYB',
+        annotation = 'Phytochrome B',
+        Cab = [13.1753, 13.1517, 12.9691, 12.8915, 13.0865],
+        Rip = [13.3295, 13.2469, 13.1068, 13.0010, 13.0031],
+        q_time     = 5.48e-4,
+        q_culttime = 2.14e-6,
+    ),
 ]
 
-GENOTYPES   = ['Cab', 'Rip', 'Ram']
-GENO_LABELS = ['Cabernet Sauvignon', 'Riparia Gloire', 'Ramsey']
+GENOTYPES   = ['Cab', 'Rip']
+GENO_LABELS = ['V.vi', 'V.ri']
 TIME_LABELS = ['1 h', '2 h', '4 h', '8 h', '24 h']
 
 N_GENES = len(GENES)
 N_GENO  = len(GENOTYPES)
 N_TIME  = len(TIME_LABELS)
-N_ROWS  = N_GENES * N_GENO   # 18
+N_ROWS  = N_GENES * N_GENO   # 14
 
-# ── Build z-scored matrix (18 × 5) ───────────────────────────────────────────
-# Each gene is z-scored across its 15 values (3 genotypes × 5 time points).
+# ── Build z-scored matrix (14 × 5) ───────────────────────────────────────────
+# Each gene is z-scored across its 10 values (2 genotypes × 5 time points).
 # This places temporal and genotypic variation on a common scale per gene.
 matrix = np.zeros((N_ROWS, N_TIME))
 
 for gi, g in enumerate(GENES):
-    all15 = np.concatenate([g[geno] for geno in GENOTYPES])
-    mu = all15.mean()
-    sd = all15.std(ddof=1)
+    all10 = np.concatenate([g[geno] for geno in GENOTYPES])
+    mu = all10.mean()
+    sd = all10.std(ddof=1)
     for ri, geno in enumerate(GENOTYPES):
         row = gi * N_GENO + ri
         matrix[row] = (np.array(g[geno]) - mu) / sd
@@ -146,8 +150,8 @@ ax = fig.add_axes([
 ])
 
 # Colorbar axes (centred vertically beside the heatmap)
-cb_h  = hm_h * 0.45
-cb_w  = 0.18
+cb_h   = hm_h * 0.45
+cb_w   = 0.18
 cb_gap = 0.20
 ax_cb = fig.add_axes([
     (L_PAD + hm_w + cb_gap) / fig_w,
@@ -180,7 +184,8 @@ ax.tick_params(axis='x', length=3)
 ax.set_yticks(range(N_ROWS))
 ax.set_yticklabels(
     [GENO_LABELS[r % N_GENO] for r in range(N_ROWS)],
-    fontsize=7.5,
+    fontsize=8,
+    style='italic',
 )
 ax.tick_params(axis='y', length=0, pad=3)
 
