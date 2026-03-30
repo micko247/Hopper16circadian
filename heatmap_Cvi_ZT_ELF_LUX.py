@@ -5,7 +5,7 @@ Evening-complex / photoreceptor genes — both Cabernet Sauvignon and Ramsey con
 
 Genes (VIT ID, common name):
   VIT_04s0008g00660  ELF3
-  VIT_06s0004g06600  ELF4
+  VIT_13s0067g00860  ELF4
   VIT_06s0004g05120  LUX
   VIT_05s0077g00940  PHYB
   VIT_02s0025g03530  GSH1
@@ -32,10 +32,10 @@ GENES = [
          Cab=[12.8277, 12.8714, 12.4261, 13.6608, 12.6355],
          Ram=[12.2060, 12.3333, 13.0446, 13.5813, 12.2062],
          q_time=7.88e-18, q_culttime=1.50e-10),
-    dict(vit='VIT_06s0004g06600', name='ELF4',
-         Cab=[ 5.5653,  5.4036,  5.3573,  6.9768,  5.5619],
-         Ram=[ 6.8099,  6.6157,  6.7612,  6.6056,  6.5294],
-         q_time=3.86e-7,  q_culttime=4.21e-9),
+    dict(vit='VIT_13s0067g00860', name='ELF4',
+         Cab=[12.6977, 12.3029, 12.3711, 13.7387, 11.5924],
+         Ram=[11.1444, 11.5999, 12.7753, 13.6586, 10.5529],
+         q_time=1.41e-13, q_culttime=5.28e-8),
     dict(vit='VIT_06s0004g05120', name='LUX',
          Cab=[10.6451, 10.4880, 11.5516, 13.9656, 10.1786],
          Ram=[ 9.9162,  9.9633, 12.5525, 13.7847,  9.5528],
