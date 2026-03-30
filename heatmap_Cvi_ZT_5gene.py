@@ -2,8 +2,11 @@
 """heatmap_Cvi_ZT_5gene.py
 --------------------------
 As heatmap_Cvi_ZT_4gene.py with GSH1 (VIT_02s0025g03530) added.
+ELF4 updated to VIT_13s0067g00860.
 
-Genes   : ELF3a, ELF4a, LUX1a, PHYB, GSH1
+Genes   : ELF3a (VIT_04s0008g00660), ELF4a (VIT_13s0067g00860),
+          LUX1a (VIT_06s0004g05120), PHYB (VIT_05s0077g00940),
+          GSH1  (VIT_02s0025g03530)
 Columns : ZT4, ZT5, ZT6, ZT8, ZT12
           (raw times 24 h, 1 h, 2 h, 4 h, 8 h)
 
@@ -21,7 +24,7 @@ from matplotlib.colors import TwoSlopeNorm
 # Internal array order: [1 h, 2 h, 4 h, 8 h, 24 h]
 GENES = [
     dict(short='ELF3a', Cab=[12.8277, 12.8714, 12.4261, 13.6608, 12.6355], q_time=7.88e-18, q_culttime=1.50e-10),
-    dict(short='ELF4a', Cab=[13.2714, 13.2597, 13.4236, 13.4866, 12.6139], q_time=2.85e-13, q_culttime=7.74e-3),
+    dict(short='ELF4a', Cab=[12.6977, 12.3029, 12.3711, 13.7387, 11.5924], q_time=1.41e-13, q_culttime=5.28e-8),
     dict(short='LUX1a', Cab=[10.6451, 10.4880, 11.5516, 13.9656, 10.1786], q_time=1.98e-20, q_culttime=3.14e-9),
     dict(short='PHYB',  Cab=[13.1753, 13.1517, 12.9691, 12.8915, 13.0865], q_time=5.48e-4,  q_culttime=2.14e-6),
     dict(short='GSH1',  Cab=[12.8261, 12.8065, 12.7746, 12.7336, 12.8332], q_time=1.43e-5,  q_culttime=3.01e-2),
